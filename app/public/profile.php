@@ -1,3 +1,22 @@
+<?php
+// Initialize the session
+session_start();
+// Include config file
+require_once "config.php";
+
+// Check if the user is logged in, if not then redirect him to login page
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.php");
+    exit;
+}
+
+$id = $_SESSION['id'];
+$sql_total_movies = 'SELECT COUNT(*) FROM movies WHERE user_id=' . $id;
+$total_movies = $pdo->query($sql_total_movies)->fetchColumn();
+$sql_movies = 'SELECT * FROM movies WHERE user_id=' . $id . ' ORDER BY updated DESC';
+$fullname = $_SESSION['fullname'];
+
+?>
 <!doctype html>
 <html lang="en">
 
@@ -33,10 +52,13 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item me-1">
-                            <a class="nav-link btn btn-primary text-white" href="signin.php">Profile <i class="bi bi-person-circle"></i></a>
+                            <a class="nav-link btn btn-success text-white" href="newMovie.php">Movie <i class="bi bi-plus-circle"></i></a>
                         </li>
                         <li class="nav-item me-1">
-                            <a class="nav-link btn btn-danger text-white" href="signin.php">Sign Out <i class="bi bi-power"></i></a>
+                            <a class="nav-link btn btn-primary text-white" href="profile.php"><?php print $_SESSION['fullname'] ?> <i class="bi bi-person-circle"></i></a>
+                        </li>
+                        <li class="nav-item me-1">
+                            <a class="nav-link btn btn-danger text-white" href="logout.php">Sign Out <i class="bi bi-power"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -50,31 +72,36 @@
                     <div class="profile m-auto text-center">
                         <i class="bi bi-person-circle text-white" style="font-size: 6.4rem;"></i>
                     </div>
-                    <h2 class="text-center text-gold p-3">Andreas Christopoulos</h2>
+                    <h2 class="text-center text-gold p-3"><?php echo $fullname ?></h2>
                     <p class="text-center text-white">
-                        <span class="movie"><i class="bi bi-film"></i> 89</span>
+                        <span class="movie"><i class="bi bi-film"></i> <?php echo $total_movies ?></span>
                         <span class="like"><i class="bi bi-hand-thumbs-up"></i> 89</span>
                         <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> 49</span>
                     </p>
                 </div>
-                <div class="movie-texture">
-                    <div class="card bg-very-dark">
-                        <div class="card-body">
-                            <h3 class="card-title">No Time to Die</h3>
-                            <p>Posted 12/10/2021 <i class="bi bi-calendar"></i></p>
-                            <hr />
-                            <p class="card-text">James Bond has left active service. His peace is short-lived when Felix Leiter, an old friend from the CIA, turns up asking for help, leading Bond onto the trail of a mysterious villain armed with dangerous new technology.</p>
-                            <hr />
-                            <p>
-                                <span class="like"><i class="bi bi-hand-thumbs-up"></i> 89</span> <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> 46</span>
-                                <span style="float:right">
-                                    <button class="btn btn-warning text-white">Edit <i class="bi bi-tools"></i></button>
-                                    <button class="btn btn-danger">Delete <i class="bi bi-trash2-fill"></i></button>
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+
+                <?php
+                foreach ($pdo->query($sql_movies) as $row) {
+                    print '<div class="movie-texture">';
+                    print '<div class="card bg-very-dark">';
+                    print '<div class="card-body">';
+                    print '<h3 class="card-title">' . $row['title'] . '</h3>';
+                    print '<p>Posted ' . $row['updated'] . ' <i class="bi bi-calendar"></i></p>';
+                    print '<hr />';
+                    print '<p class="card-text">' . $row['description'] . '</p>';
+                    print '<hr />';
+                    print '<p>';
+                    print '<span class="like"><i class="bi bi-hand-thumbs-up"></i> 89</span> <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> 46</span>';
+                    print '<span style="float:right">';
+                    print '<a class="btn btn-warning text-white" href="editMovie.php?id=' . $row['id'] . '">Edit <i class="bi bi-tools"></i></a> ';
+                    print '<a class="btn btn-danger  text-white" href="deleteMovie.php?id=' . $row['id'] . '">Delete <i class="bi bi-trash2-fill"></i></a>';
+                    print '</span>';
+                    print '</p>';
+                    print '</div>';
+                    print '</div>';
+                    print '</div>';
+                }
+                ?>
             </div>
         </div>
     </main>

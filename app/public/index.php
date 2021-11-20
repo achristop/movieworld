@@ -1,3 +1,16 @@
+<?php
+session_start();
+// Include config file
+require_once "config.php";
+$sql_movies = 'SELECT * FROM movies ORDER BY updated DESC';
+$sql_users = 'SELECT id, fullname, username FROM users';
+$sql_total_movies = 'SELECT COUNT(*) FROM movies';
+$total_movies = $pdo->query($sql_total_movies)->fetchColumn();
+$usernames = array();
+foreach ($pdo->query($sql_users) as $row) {
+  $usernames[$row['id']] = $row['fullname'];
+}
+?>
 <!doctype html>
 <html lang="en">
 
@@ -30,12 +43,27 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item me-1">
+            <?php
+            if ($_SESSION && $_SESSION["loggedin"] === true) {
+              echo '
+              <li class="nav-item me-1">
+                <a class="nav-link btn btn-success text-white" href="newMovie.php">Movie <i class="bi bi-plus-circle"></i></a>
+              </li>
+              <li class="nav-item me-1">
+                <a class="nav-link btn btn-primary text-white" href="profile.php">' . $_SESSION['fullname'] . ' <i class="bi bi-person-circle"></i></a>
+              </li>
+              <li class="nav-item me-1">
+                <a class="nav-link btn btn-danger text-white" href="logout.php">Sign Out <i class="bi bi-power"></i></a>
+              </li>';
+            } else {
+              echo ' <li class="nav-item me-1">
               <a class="nav-link btn btn-success text-white" href="signin.php">Sign In <i class="bi bi-door-open"></i></a>
             </li>
             <li class="nav-item">
               <a class="nav-link btn btn-primary text-white" href="signup.php">Sign Up <i class="bi bi-door-closed-fill"></i></a>
-            </li>
+            </li>';
+            }
+            ?>
           </ul>
         </div>
       </div>
@@ -47,55 +75,34 @@
         <div class="col-9">
           <div class="movies-info">
             <p>
-              <span class="movie"><i class="bi bi-film"></i> Movies 89</span>
+              <span class="movie"><i class="bi bi-film"></i> Movies <?php print $total_movies ?></span>
               <span class="sorting"><i class="bi bi-sort-up-alt"></i> Sort by</span>
               <span class="like"><i class="bi bi-hand-thumbs-up"></i> Likes</span>
               <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> Dislikes</span>
               <span class="date"><i class="bi bi-calendar"></i> Dates</span>
-
             </p>
           </div>
-          <div class="movie-texture">
-            <div class="card bg-very-dark">
-              <div class="card-body">
-                <h3 class="card-title">No Time to Die</h3>
-                <p>Posted 12/10/2021 <i class="bi bi-calendar"></i></p>
-                <hr />
-                <p class="card-text">James Bond has left active service. His peace is short-lived when Felix Leiter, an old friend from the CIA, turns up asking for help, leading Bond onto the trail of a mysterious villain armed with dangerous new technology.</p>
-                <hr />
-                <p>
-                  <span class="like"><i class="bi bi-hand-thumbs-up"></i> 89</span> <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> 46</span>
-                  <span style="float:right">
-                    Posted by <a class="postedby" href="#"><i class="bi bi-person-circle"></i> Andreas Christopoulos</a>
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="movie-texture">
-            <div class="card bg-very-dark">
-              <div class="card-body">
-                <h3 class="card-title">Spider-Man: No Way Home</h3>
-                <p>Posted 19/10/2021</p>
-                <hr />
-                <p class="card-text">With Spider-Man's identity now revealed, Peter asks Doctor Strange for help. When a spell goes wrong, dangerous foes from other worlds start to appear, forcing Peter to discover what it truly means to be Spider-Man.</p>
-                <hr />
-                <p>Likes <span class="liked-movie">189</span> | Dislikes <span class="disliked-movie">52</span><span style="float:right"> Posted by <a class="postedby" href="#">Andreas Christopoulos</a></span></p>
-              </div>
-            </div>
-          </div>
-          <div class="movie-texture">
-            <div class="card bg-very-dark">
-              <div class="card-body">
-                <h3 class="card-title">Star Trek Into Darkness</h3>
-                <p>Posted 17/10/2021</p>
-                <hr />
-                <p class="card-text">After the crew of the Enterprise find an unstoppable force of terror from within their own organization, Captain Kirk leads a manhunt to a war-zone world to capture a one-man weapon of mass destruction.</p>
-                <hr />
-                <p>Likes <span class="liked-movie">39</span> | Dislikes <span class="disliked-movie">22</span><span style="float:right"> Posted by <a class="postedby" href="#">George Papidas</a></span></p>
-              </div>
-            </div>
-          </div>
+          <?php
+          foreach ($pdo->query($sql_movies) as $row) {
+            print '<div class="movie-texture">';
+            print '<div class="card bg-very-dark">';
+            print '<div class="card-body">';
+            print '<h3 class="card-title">' . $row['title'] . '</h3>';
+            print '<p>Posted ' . $row['updated'] . ' <i class="bi bi-calendar"></i></p>';
+            print '<hr />';
+            print '<p class="card-text">' . $row['description'] . '</p>';
+            print '<hr />';
+            print '<p>';
+            print '<span class="like"><i class="bi bi-hand-thumbs-up"></i> 89</span> <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> 46</span>';
+            print '<span style="float:right">';
+            print 'Posted by <a class="postedby" href="#"><i class="bi bi-person-circle"></i> ' . $usernames[$row['user_id']] . '</a>';
+            print '</span>';
+            print '</p>';
+            print '</div>';
+            print '</div>';
+            print '</div>';
+          }
+          ?>
         </div>
       </div>
     </div>
