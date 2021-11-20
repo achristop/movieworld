@@ -1,0 +1,272 @@
+/* CSS for app MovieWorld */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #1c1e21;
+  font-family: 'Robot', sans-serif;
+  color: #fff;
+}
+
+.custom-brand {
+  color: #f38d09 !important;
+  font-weight: bold;
+  border-bottom: 3px solid #1c1e21;
+  transition: border 0.5s ease-in-out;
+  text-decoration: none;
+}
+
+.custom-brand:hover {
+  border-bottom: 3px solid #f38d09;
+  transition: border 0.5s ease-in-out;
+}
+
+.navbar-brand {
+  color: #f38d09 !important;
+  font-weight: bold;
+  border-bottom: 3px solid #242526;
+  transition: border 0.5s ease-in-out;
+  font-size: 2.5rem !important;
+}
+
+.navbar-brand:hover {
+  border-bottom: 3px solid #f38d09;
+  transition: border 0.5s ease-in-out;
+}
+
+.bg-very-dark {
+  background-color: #242526;
+}
+
+.date {
+  padding: 10px;
+  background: #17a2b8;
+  border-radius: 20px;
+  box-shadow: 0 1px 2px #151516;
+}
+
+.sorting {
+  padding: 10px;
+  background: #ffc107;
+  border-radius: 20px;
+  box-shadow: 0 1px 2px #151516;
+}
+
+.movie {
+  padding: 10px;
+  background: #198754;
+  border-radius: 20px;
+  box-shadow: 0 1px 2px #151516;
+}
+
+.like {
+  padding: 10px;
+  background: #0d6efd;
+  border-radius: 20px;
+  box-shadow: 0 1px 2px #151516;
+}
+
+.dislike {
+  padding: 10px;
+  background: #dc3545;
+  border-radius: 20px;
+  box-shadow: 0 1px 2px #151516;
+}
+
+.movies-info {
+  margin: 10px 0;
+  width: 100%;
+  height: 60px;
+  background: #242526;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px #151516;
+  font-weight: bold;
+}
+
+.movies-sort {
+  margin: 10px 0;
+  width: 100%;
+  background: #242526;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px #151516;
+}
+
+.new-movie-texture {
+  margin: 10px 0;
+  width: 100%;
+  height: auto;
+  background: #242526;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px #151516;
+}
+
+.movie-texture {
+  margin: 10px 0;
+  width: 100%;
+  height: 300px;
+  background: #242526;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px #151516;
+}
+
+.sidebar-texture {
+  margin: 10px 0;
+  width: 100%;
+  background: #242526;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px #151516;
+}
+
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-list-item {
+  margin: 10px;
+}
+
+.sort-btn {
+  margin: auto;
+  width: 100%;
+}
+
+.postedby:link,
+.postedby:visited {
+  color: #f38d09;
+  text-decoration: none;
+  padding-bottom: 4px;
+  border-bottom: 3px solid #242526;
+  transition: border 0.5s ease-in-out;
+}
+
+.postedby:hover,
+.postedby:active {
+  border-bottom: 3px solid #f38d09;
+  transition: border 0.5s ease-in-out;
+}
+
+.card {
+  border: none;
+}
+
+.card-title {
+  color: #f38d09;
+}
+
+.text-gold {
+  color: #f38d09;
+}
+
+.text-gray {
+  color: #242526;
+}
+
+.text-dark {
+  color: #1c1e21;
+}
+
+.text-green {
+  color: #198754;
+}
+
+.text-blue {
+  color: #0d6efd;
+}
+
+.text-red {
+  color: #dc3545;
+}
+
+.text-light-blue {
+  color: #17a2b8;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type='text'] {
+  background-color: #1c1e21;
+  color: #fff;
+  margin-bottom: -1px;
+  border: 1px solid #f38d09;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+textarea {
+  background-color: #1c1e21 !important;
+  color: #fff !important;
+  margin-bottom: -1px !important;
+  border: 1px solid #f38d09 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  height: 300px !important;
+}
+
+.form-signin input[type='email'] {
+  background-color: #1c1e21;
+  color: #fff;
+  margin-bottom: -1px;
+  border: 1px solid #f38d09;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type='password'] {
+  color: #fff;
+  background-color: #1c1e21;
+  border: 1px solid #f38d09;
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.form-signin input[type='text']:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.form-signin input[type='password']:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.form-signin input[type='email']:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+
+textarea:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
