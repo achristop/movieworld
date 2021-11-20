@@ -2,6 +2,12 @@
 session_start();
 // Include config file
 require_once "config.php";
+
+// Check if the user is logged in, if not then redirect him to login page
+if ($_SESSION && $_SESSION["loggedin"] === true) {
+  $userId = $_SESSION['id'];
+}
+
 $sql_movies = 'SELECT * FROM movies ORDER BY updated DESC';
 $sql_users = 'SELECT id, fullname, username FROM users';
 $sql_total_movies = 'SELECT COUNT(*) FROM movies';
@@ -35,7 +41,7 @@ foreach ($pdo->query($sql_users) as $row) {
 
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-very-dark">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-very-dark">
       <div class="container">
         <a class="navbar-brand" href="/"><i class="bi bi-film"></i> MovieWorld </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,6 +75,7 @@ foreach ($pdo->query($sql_users) as $row) {
       </div>
     </nav>
   </header>
+  <div class="add-space"></div>
   <main>
     <div class="container">
       <div class="row g-3">
@@ -84,6 +91,18 @@ foreach ($pdo->query($sql_users) as $row) {
           </div>
           <?php
           foreach ($pdo->query($sql_movies) as $row) {
+            $sql_likes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = 1';
+            $sql_dislikes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = 0';
+            try {
+              $likes = $pdo->query($sql_likes)->fetchColumn();
+            } catch (PDOException $e) {
+              $likes = 0;
+            }
+            try {
+              $dislikes = $pdo->query($sql_dislikes)->fetchColumn();
+            } catch (PDOException $e) {
+              $dislikes = 0;
+            }
             print '<div class="movie-texture">';
             print '<div class="card bg-very-dark">';
             print '<div class="card-body">';
@@ -93,11 +112,20 @@ foreach ($pdo->query($sql_users) as $row) {
             print '<p class="card-text">' . $row['description'] . '</p>';
             print '<hr />';
             print '<p>';
-            print '<span class="like"><i class="bi bi-hand-thumbs-up"></i> 89</span> <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> 46</span>';
+            print '<br /><br />';
+            print '<span class="like"><i class="bi bi-hand-thumbs-up"></i> ' . $likes . '</span> ';
+            print '<span class="dislike"><i class="bi bi-hand-thumbs-down"></i> ' . $dislikes . '</span>';
             print '<span style="float:right">';
             print 'Posted by <a class="postedby" href="#"><i class="bi bi-person-circle"></i> ' . $usernames[$row['user_id']] . '</a>';
             print '</span>';
             print '</p>';
+            if ($_SESSION && $_SESSION["loggedin"] === true && $row['user_id'] != $userId) {
+              print '<p>';
+              print '<hr />';
+              print '<span style="width:49%;float:left;"><a href="/rating.php?movieId=' . $row['id'] . '&userId=' . $userId . '&rating=1" style="width:100%;float:left;" class="btn btn-primary">Like <i class="bi bi-hand-thumbs-up"></i></a></span>';
+              print '<span style="width:49%;float:right;"><a href="/rating.php?movieId=' . $row['id'] . '&userId=' . $userId . '&rating=0" style="width:100%;float:right;" class="btn btn-danger">Dislike <i class="bi bi-hand-thumbs-down"></i></a></span>';
+              print '</p>';
+            }
             print '</div>';
             print '</div>';
             print '</div>';
@@ -107,7 +135,8 @@ foreach ($pdo->query($sql_users) as $row) {
       </div>
     </div>
   </main>
-  <footer class="footer mt-auto p-3 bg-very-dark">
+  <div class="add-space"></div>
+  <footer class="footer fixed-bottom mt-auto p-3 bg-very-dark">
     <div class="container">
       <br />
       <p class="text-gold text-center"><i class="bi bi-film"></i> MovieWorld © 2021</p>

@@ -5,6 +5,12 @@ session_start();
 // Include config file
 require_once "config.php";
 
+// Check if the user is logged in, if not then redirect him to login page
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: index.php");
+    exit;
+}
+
 // Define variables and initialize with empty values
 $title = $description = "";
 $title_err = $description_err = "";
@@ -86,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-very-dark">
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-very-dark">
             <div class="container">
                 <a class="navbar-brand" href="/"><i class="bi bi-film"></i> MovieWorld </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,11 +116,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </nav>
     </header>
+    <div class="add-space"></div>
+
     <main class="container">
         <div class="row g-1">
             <div class="col-9">
                 <div class="new-movie-texture">
-                    <h1 class="text-gold text-center">New Movie</h1>
+                    <h1 class="text-gold text-center"><i class="bi bi-plus-circle"></i> New Movie</h1>
                 </div>
                 <div class="new-movie-texture">
                     <form class="form-signin needs-validation" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" style="max-width: 600px;" novalidate>
@@ -137,7 +145,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </main>
-    <footer class="footer mt-auto p-3 bg-very-dark">
+    <div class="add-space"></div>
+    <footer class="footer fixed-bottom mt-auto p-3 bg-very-dark">
         <div class="container">
             <br />
             <p class="text-gold text-center"><i class="bi bi-film"></i> MovieWorld © 2021</p>

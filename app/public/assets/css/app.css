@@ -82,7 +82,7 @@ body {
 }
 
 .movies-info {
-  margin: 10px 0;
+  margin: 0px 0;
   width: 100%;
   height: 60px;
   background: #242526;
@@ -114,7 +114,7 @@ body {
 .movie-texture {
   margin: 10px 0;
   width: 100%;
-  height: 300px;
+  height: auto;
   background: #242526;
   padding: 20px;
   border-radius: 3px;
@@ -269,4 +269,8 @@ textarea {
 textarea:focus {
   outline: none !important;
   box-shadow: none !important;
+}
+
+.add-space {
+  height: 100px;
 }

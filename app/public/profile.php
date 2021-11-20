@@ -15,6 +15,22 @@ $sql_total_movies = 'SELECT COUNT(*) FROM movies WHERE user_id=' . $id;
 $total_movies = $pdo->query($sql_total_movies)->fetchColumn();
 $sql_movies = 'SELECT * FROM movies WHERE user_id=' . $id . ' ORDER BY updated DESC';
 $fullname = $_SESSION['fullname'];
+$sql_total_likes = 'SELECT COUNT(*) FROM ratings WHERE rating = 1 AND user_id=' . $id;
+$sql_total_dislikes = 'SELECT COUNT(*) FROM ratings WHERE rating = 0 AND user_id';
+$total_likes = $pdo->query($sql_total_likes)->fetchColumn();
+$total_dislikes = $pdo->query($sql_total_dislikes)->fetchColumn();
+
+$total_likes = 0;
+$total_dislikes = 0;
+foreach ($pdo->query($sql_movies) as $row) {
+    $sql_total_likes = 'SELECT COUNT(*) FROM ratings WHERE rating = 1 AND user_id=' . $id . ' AND movie_id=' . $row['id'];
+    $sql_total_dislikes = 'SELECT COUNT(*) FROM ratings WHERE rating = 0 AND user_id=' . $id . ' AND movie_id=' . $row['id'];
+    try {
+        $total_dislikes += $pdo->query($sql_total_dislikes)->fetchColumn();
+        $total_likes += $pdo->query($sql_total_likes)->fetchColumn();
+    } catch (PDOException $e) {
+    }
+}
 
 ?>
 <!doctype html>
@@ -43,7 +59,7 @@ $fullname = $_SESSION['fullname'];
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-very-dark">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-very-dark">
             <div class="container">
                 <a class="navbar-brand" href="/"><i class="bi bi-film"></i> MovieWorld </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,6 +81,7 @@ $fullname = $_SESSION['fullname'];
             </div>
         </nav>
     </header>
+    <div class="add-space"></div>
     <main class="container">
         <div class="row g-1">
             <div class="col-9">
@@ -75,13 +92,25 @@ $fullname = $_SESSION['fullname'];
                     <h2 class="text-center text-gold p-3"><?php echo $fullname ?></h2>
                     <p class="text-center text-white">
                         <span class="movie"><i class="bi bi-film"></i> <?php echo $total_movies ?></span>
-                        <span class="like"><i class="bi bi-hand-thumbs-up"></i> 89</span>
-                        <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> 49</span>
+                        <span class="like"><i class="bi bi-hand-thumbs-up"></i> <?php echo $total_likes ?></span>
+                        <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> <?php echo $total_dislikes ?></span>
                     </p>
                 </div>
 
                 <?php
                 foreach ($pdo->query($sql_movies) as $row) {
+                    $sql_likes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = 1';
+                    $sql_dislikes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = 0';
+                    try {
+                        $likes = $pdo->query($sql_likes)->fetchColumn();
+                    } catch (PDOException $e) {
+                        $likes = 0;
+                    }
+                    try {
+                        $dislikes = $pdo->query($sql_dislikes)->fetchColumn();
+                    } catch (PDOException $e) {
+                        $dislikes = 0;
+                    }
                     print '<div class="movie-texture">';
                     print '<div class="card bg-very-dark">';
                     print '<div class="card-body">';
@@ -91,7 +120,8 @@ $fullname = $_SESSION['fullname'];
                     print '<p class="card-text">' . $row['description'] . '</p>';
                     print '<hr />';
                     print '<p>';
-                    print '<span class="like"><i class="bi bi-hand-thumbs-up"></i> 89</span> <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> 46</span>';
+                    print '<span class="like"><i class="bi bi-hand-thumbs-up"></i>' . $likes . '</span> ';
+                    print '<span class="dislike"><i class="bi bi-hand-thumbs-down"></i>' . $dislikes . '</span>';
                     print '<span style="float:right">';
                     print '<a class="btn btn-warning text-white" href="editMovie.php?id=' . $row['id'] . '">Edit <i class="bi bi-tools"></i></a> ';
                     print '<a class="btn btn-danger  text-white" href="deleteMovie.php?id=' . $row['id'] . '">Delete <i class="bi bi-trash2-fill"></i></a>';
@@ -104,8 +134,9 @@ $fullname = $_SESSION['fullname'];
                 ?>
             </div>
         </div>
+        <div class="add-space"></div>
     </main>
-    <footer class="footer mt-auto p-3 bg-very-dark">
+    <footer class="footer fixed-bottom mt-auto p-3 bg-very-dark">
         <div class="container">
             <br />
             <p class="text-gold text-center"><i class="bi bi-film"></i> MovieWorld © 2021</p>
