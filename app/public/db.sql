@@ -1,4 +1,12 @@
+-- Set time zone (needs root privilages)
+
+SET GLOBAL time_zone = 'Europe/Athens';
+
+-- Create database
+
 CREATE DATABASE `movieworld`;
+
+-- Create table for users
 
 CREATE TABLE `users` (
 	`id` INT NOT NULL AUTO_INCREMENT,
@@ -10,6 +18,8 @@ CREATE TABLE `users` (
 	PRIMARY KEY (`id`)
 );
 
+-- Create table for movies
+
 CREATE TABLE `movies` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`title` VARCHAR(240) NOT NULL,
@@ -20,6 +30,8 @@ CREATE TABLE `movies` (
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY (`id`)
 );
+
+-- Create table for ratings
 
 CREATE TABLE `ratings` (
 	`id` INT NOT NULL AUTO_INCREMENT,
