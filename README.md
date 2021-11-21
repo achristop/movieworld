@@ -26,6 +26,8 @@
 ## Run
 
 ```
+git clone https://github.com/achristop/movieworld.git
+cd movieworld
 docker-compose up
 ```
 
