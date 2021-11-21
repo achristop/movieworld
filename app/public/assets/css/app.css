@@ -84,7 +84,6 @@ body {
 .movies-info {
   margin: 0px 0;
   width: 100%;
-  height: 60px;
   background: #242526;
   padding: 20px;
   border-radius: 3px;
@@ -283,4 +282,12 @@ textarea:focus {
 .info-style:hover {
   text-decoration: none;
   color: #fff;
+}
+
+.profile {
+  border-radius: 100%;
+  border: 3px solid #f38d09;
+  width: 150px;
+  height: 150px;
+  background-color: #242526;
 }

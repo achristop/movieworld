@@ -31,118 +31,61 @@ foreach ($pdo->query($sql_movies) as $row) {
     } catch (PDOException $e) {
     }
 }
+
 ?>
-<!doctype html>
-<html lang="en">
+<?php include "header.php"; ?>
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="./assets/css/app.css" rel="stylesheet" />
-    <link href="./assets/css/profile.css" rel="stylesheet" />
-
-    <title>MovieWorld - Sign Up</title>
-</head>
-
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-very-dark">
-            <div class="container">
-                <a class="navbar-brand" href="/"><i class="bi bi-film"></i> MovieWorld </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item me-1">
-                            <a class="nav-link btn btn-success text-white" href="newMovie.php">Movie <i class="bi bi-plus-circle"></i></a>
-                        </li>
-                        <li class="nav-item me-1">
-                            <a class="nav-link btn btn-primary text-white" href="profile.php"><?php print $_SESSION['fullname'] ?> <i class="bi bi-person-circle"></i></a>
-                        </li>
-                        <li class="nav-item me-1">
-                            <a class="nav-link btn btn-danger text-white" href="logout.php">Sign Out <i class="bi bi-power"></i></a>
-                        </li>
-                    </ul>
+<main class="container">
+    <div class="row g-1">
+        <div class="col-lg-9 col-12">
+            <div class="movie-texture">
+                <div class="profile m-auto text-center">
+                    <i class="bi bi-person-circle text-white" style="font-size: 6.4rem;"></i>
                 </div>
+                <h2 class="text-center text-gold p-3"><?php echo $fullname ?></h2>
+                <p class="text-center text-white">
+                    <span class="movie"><i class="bi bi-film"></i> <?php echo $total_movies ?></span>
+                    <span class="like"><i class="bi bi-hand-thumbs-up"></i> <?php echo $total_likes ?></span>
+                    <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> <?php echo $total_dislikes ?></span>
+                </p>
             </div>
-        </nav>
-    </header>
-    <div class="add-space"></div>
-    <main class="container">
-        <div class="row g-1">
-            <div class="col-9">
-                <div class="movie-texture">
-                    <div class="profile m-auto text-center">
-                        <i class="bi bi-person-circle text-white" style="font-size: 6.4rem;"></i>
-                    </div>
-                    <h2 class="text-center text-gold p-3"><?php echo $fullname ?></h2>
-                    <p class="text-center text-white">
-                        <span class="movie"><i class="bi bi-film"></i> <?php echo $total_movies ?></span>
-                        <span class="like"><i class="bi bi-hand-thumbs-up"></i> <?php echo $total_likes ?></span>
-                        <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> <?php echo $total_dislikes ?></span>
-                    </p>
-                </div>
 
-                <?php
-                foreach ($pdo->query($sql_movies) as $row) {
-                    $sql_likes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = 1';
-                    $sql_dislikes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = -1';
-                    try {
-                        $likes = $pdo->query($sql_likes)->fetchColumn();
-                    } catch (PDOException $e) {
-                        $likes = 0;
-                    }
-                    try {
-                        $dislikes = $pdo->query($sql_dislikes)->fetchColumn();
-                    } catch (PDOException $e) {
-                        $dislikes = 0;
-                    }
-                    print '<div class="movie-texture">';
-                    print '<div class="card bg-very-dark">';
-                    print '<div class="card-body">';
-                    print '<h3 class="card-title">' . $row['title'] . '</h3>';
-                    print '<p>Posted ' . $row['updated'] . ' <i class="bi bi-calendar"></i></p>';
-                    print '<hr />';
-                    print '<p class="card-text">' . $row['description'] . '</p>';
-                    print '<hr />';
-                    print '<p>';
-                    print '<span class="like"><i class="bi bi-hand-thumbs-up"></i>' . $likes . '</span> ';
-                    print '<span class="dislike"><i class="bi bi-hand-thumbs-down"></i>' . $dislikes . '</span>';
-                    print '<span style="float:right">';
-                    print '<a class="btn btn-warning text-white" href="editMovie.php?id=' . $row['id'] . '">Edit <i class="bi bi-tools"></i></a> ';
-                    print '<a class="btn btn-danger  text-white" href="deleteMovie.php?id=' . $row['id'] . '">Delete <i class="bi bi-trash2-fill"></i></a>';
-                    print '</span>';
-                    print '</p>';
-                    print '</div>';
-                    print '</div>';
-                    print '</div>';
+            <?php
+            foreach ($pdo->query($sql_movies) as $row) {
+                $sql_likes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = 1';
+                $sql_dislikes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = -1';
+                try {
+                    $likes = $pdo->query($sql_likes)->fetchColumn();
+                } catch (PDOException $e) {
+                    $likes = 0;
                 }
-                ?>
-            </div>
+                try {
+                    $dislikes = $pdo->query($sql_dislikes)->fetchColumn();
+                } catch (PDOException $e) {
+                    $dislikes = 0;
+                }
+                print '<div class="movie-texture">';
+                print '<div class="card bg-very-dark">';
+                print '<div class="card-body">';
+                print '<h3 class="card-title">' . $row['title'] . '</h3>';
+                print '<p>Posted ' . $row['updated'] . ' <i class="bi bi-calendar"></i></p>';
+                print '<hr />';
+                print '<p class="card-text">' . $row['description'] . '</p>';
+                print '<hr />';
+                print '<p>';
+                print '<span class="like"><i class="bi bi-hand-thumbs-up"></i>' . $likes . '</span> ';
+                print '<span class="dislike"><i class="bi bi-hand-thumbs-down"></i>' . $dislikes . '</span>';
+                print '<span style="float:right">';
+                print '<a class="btn btn-warning text-white" href="editMovie.php?id=' . $row['id'] . '">Edit <i class="bi bi-tools"></i></a> ';
+                print '<a class="btn btn-danger  text-white" href="deleteMovie.php?id=' . $row['id'] . '">Delete <i class="bi bi-trash2-fill"></i></a>';
+                print '</span>';
+                print '</p>';
+                print '</div>';
+                print '</div>';
+                print '</div>';
+            }
+            ?>
         </div>
-        <div class="add-space"></div>
-    </main>
-    <footer class="footer fixed-bottom mt-auto p-3 bg-very-dark">
-        <div class="container">
-            <br />
-            <p class="text-gold text-center"><i class="bi bi-film"></i> MovieWorld © 2021</p>
-        </div>
-    </footer>
-
-
-</body>
-
-</html>
+    </div>
+</main>
+<?php include 'footer.php'; ?>

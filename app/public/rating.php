@@ -45,6 +45,7 @@ if (!empty($movieId) && !empty($userId) && !empty($rating)) {
             $sql_update_rating = "UPDATE ratings SET rating = " . $rating_value . " , updated = NOW() WHERE id = " . $rating_id;
             $pdo->exec($sql_update_rating);
         }
+        unset($pdo);
         header("location: index.php");
     } catch (PDOException $e) {
         echo "Error: " . $e;
