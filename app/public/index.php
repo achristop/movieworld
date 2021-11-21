@@ -8,7 +8,16 @@ if ($_SESSION && $_SESSION["loggedin"] === true) {
   $userId = $_SESSION['id'];
 }
 
-$sql_movies = 'SELECT * FROM movies ORDER BY updated DESC';
+$sort = $_GET["sort"] ?? null;
+
+if ($sort === "likes") {
+  $sql_movies = "SELECT * FROM movies INNER JOIN ratings ON movies.id = ratings.movie_id WHERE ratings.rating != 0 GROUP BY movies.id ORDER BY ratings.movie_id ASC";
+} elseif ($sort === "dislikes") {
+  $sql_movies = "SELECT * FROM movies INNER JOIN ratings ON movies.id = ratings.movie_id WHERE ratings.rating != 0 GROUP BY movies.id ORDER BY ratings.movie_id DESC";
+} else {
+  $sql_movies = 'SELECT * FROM movies ORDER BY updated DESC';
+}
+
 $sql_users = 'SELECT id, fullname, username FROM users';
 $sql_total_movies = 'SELECT COUNT(*) FROM movies';
 $total_movies = $pdo->query($sql_total_movies)->fetchColumn();
@@ -79,21 +88,26 @@ foreach ($pdo->query($sql_users) as $row) {
   <main>
     <div class="container">
       <div class="row g-3">
-        <div class="col-9">
+        <div class="col-lg-9 col-12">
           <div class="movies-info">
             <p>
               <span class="movie"><i class="bi bi-film"></i> Movies <?php print $total_movies ?></span>
               <span class="sorting"><i class="bi bi-sort-up-alt"></i> Sort by</span>
-              <span class="like"><i class="bi bi-hand-thumbs-up"></i> Likes</span>
-              <span class="dislike"><i class="bi bi-hand-thumbs-down"></i> Dislikes</span>
-              <span class="date"><i class="bi bi-calendar"></i> Dates</span>
+              <a class="info-style" href="index.php?sort=likes"><span class="like"><i class="bi bi-hand-thumbs-up"></i> Likes</span></a>
+              <a class="info-style" href="index.php?sort=dislikes"><span class="dislike"><i class="bi bi-hand-thumbs-down"></i> Dislikes</span></a>
+              <a class="info-style" href="/"><span class="date"><i class="bi bi-calendar"></i> Dates</span></a>
             </p>
           </div>
           <?php
           foreach ($pdo->query($sql_movies) as $row) {
-            $sql_likes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = 1';
-            $sql_dislikes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = -1';
 
+            if ($sort === "likes" || $sort === "dislikes") {
+              $sql_likes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['movie_id'] . ' AND rating = 1';
+              $sql_dislikes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['movie_id'] . ' AND rating = -1';
+            } else {
+              $sql_likes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = 1';
+              $sql_dislikes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = -1';
+            }
             try {
               $likes = $pdo->query($sql_likes)->fetchColumn();
             } catch (PDOException $e) {
@@ -104,6 +118,9 @@ foreach ($pdo->query($sql_users) as $row) {
             } catch (PDOException $e) {
               $dislikes = 0;
             }
+
+
+
             print '<div class="movie-texture">';
             print '<div class="card bg-very-dark">';
             print '<div class="card-body">';

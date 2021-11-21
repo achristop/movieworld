@@ -278,3 +278,9 @@ textarea:focus {
 .btn-dark {
   background-color: #f38d09 !important;
 }
+
+.info-style,
+.info-style:hover {
+  text-decoration: none;
+  color: #fff;
+}
