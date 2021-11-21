@@ -33,4 +33,8 @@ docker-compose up
 
 ## Visit
 
-MovieWorld at -> [127.0.0.1](http://127.0.0.1)
+- MovieWorld at -> [127.0.0.1](http://127.0.0.1)
+
+- For convinience all passwords are the same -> 123456
+
+- Example -> Username: "jdoe" && Password : "123456"
