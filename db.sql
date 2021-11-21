@@ -49,10 +49,11 @@ CREATE TABLE `ratings` (
 
 INSERT INTO `users` (`fullname`, `username`, `password`) VALUES ('Andreas Christopoulos', 'achristopoulos', '$2y$10$RuSdDZwAdmL7wRtCqRxZQOdo06VXBqm3osX8RyKn1qps9EH3Rzste');
 INSERT INTO `users` (`fullname`, `username`, `password`) VALUES ('George Christopoulos', 'gchristopoulos', '$2y$10$RuSdDZwAdmL7wRtCqRxZQOdo06VXBqm3osX8RyKn1qps9EH3Rzste');
-INSERT INTO `users` (`fullname`, `username`, `password`) VALUES ('Maridina Christopoulos', 'mchristopoulos', '$2y$10$RuSdDZwAdmL7wRtCqRxZQOdo06VXBqm3osX8RyKn1qps9EH3Rzste');
+INSERT INTO `users` (`fullname`, `username`, `password`) VALUES ('Maridina Christopoulou', 'mchristopoulou', '$2y$10$RuSdDZwAdmL7wRtCqRxZQOdo06VXBqm3osX8RyKn1qps9EH3Rzste');
 INSERT INTO `users` (`fullname`, `username`, `password`) VALUES ('George Papidas', 'gpapidas', '$2y$10$RuSdDZwAdmL7wRtCqRxZQOdo06VXBqm3osX8RyKn1qps9EH3Rzste');
 INSERT INTO `users` (`fullname`, `username`, `password`) VALUES ('Fotis Oikonomou', 'foikonomou', '$2y$10$RuSdDZwAdmL7wRtCqRxZQOdo06VXBqm3osX8RyKn1qps9EH3Rzste');
 INSERT INTO `users` (`fullname`, `username`, `password`) VALUES ('Apostolis Mparsinikas', 'amparsinikas', '$2y$10$RuSdDZwAdmL7wRtCqRxZQOdo06VXBqm3osX8RyKn1qps9EH3Rzste');
+INSERT INTO `users` (`fullname`, `username`, `password`) VALUES ('John Doe', 'jdoe', '$2y$10$RuSdDZwAdmL7wRtCqRxZQOdo06VXBqm3osX8RyKn1qps9EH3Rzste');
 
 -- Movie Sample
 
@@ -96,15 +97,15 @@ INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,4);
 INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,5);
 INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,6);
 INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,7);
+INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,8);
+INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,9);
+INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,10);
+INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,11);
+INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,12);
+INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,13);
 INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,14);
 INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,15);
 INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,16);
 INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,17);
-INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,18);
-INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,19);
-INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,20);
-INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,21);
-INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,22);
-INSERT INTO `ratings` (`rating`, `user_id`, `movie_id`) VALUES (1,6,23);
 
 
