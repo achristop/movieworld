@@ -92,7 +92,8 @@ foreach ($pdo->query($sql_users) as $row) {
           <?php
           foreach ($pdo->query($sql_movies) as $row) {
             $sql_likes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = 1';
-            $sql_dislikes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = 0';
+            $sql_dislikes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = -1';
+
             try {
               $likes = $pdo->query($sql_likes)->fetchColumn();
             } catch (PDOException $e) {
@@ -120,10 +121,26 @@ foreach ($pdo->query($sql_users) as $row) {
             print '</span>';
             print '</p>';
             if ($_SESSION && $_SESSION["loggedin"] === true && $row['user_id'] != $userId) {
+              $sql_rating = "SELECT rating FROM ratings WHERE user_id=" . $_SESSION['id'] . " AND movie_id=" . $row['id'];
+              $rating_value = 0;
+              try {
+                foreach ($pdo->query($sql_rating) as $r) {
+                  $rating_value = $r["rating"];
+                }
+              } catch (PDOException $e) {
+              }
               print '<p>';
               print '<hr />';
-              print '<span style="width:49%;float:left;"><a href="/rating.php?movieId=' . $row['id'] . '&userId=' . $userId . '&rating=1" style="width:100%;float:left;" class="btn btn-primary">Like <i class="bi bi-hand-thumbs-up"></i></a></span>';
-              print '<span style="width:49%;float:right;"><a href="/rating.php?movieId=' . $row['id'] . '&userId=' . $userId . '&rating=0" style="width:100%;float:right;" class="btn btn-danger">Dislike <i class="bi bi-hand-thumbs-down"></i></a></span>';
+              if ($rating_value === '1') {
+                print '<span style="width:49%;float:left;"><a href="/rating.php?movieId=' . $row['id'] . '&userId=' . $userId . '&rating=1" style="width:100%;float:left;" class="btn btn-primary white-border">Like <i class="bi bi-hand-thumbs-up"></i></a></span>';
+                print '<span style="width:49%;float:right;"><a href="/rating.php?movieId=' . $row['id'] . '&userId=' . $userId . '&rating=-1" style="width:100%;float:right;" class="btn btn-dark">Dislike <i class="bi bi-hand-thumbs-down"></i></a></span>';
+              } else if ($rating_value === '-1') {
+                print '<span style="width:49%;float:left;"><a href="/rating.php?movieId=' . $row['id'] . '&userId=' . $userId . '&rating=1" style="width:100%;float:left;" class="btn btn-dark">Like <i class="bi bi-hand-thumbs-up"></i></a></span>';
+                print '<span style="width:49%;float:right;"><a href="/rating.php?movieId=' . $row['id'] . '&userId=' . $userId . '&rating=-1" style="width:100%;float:right;" class="btn btn-danger">Dislike <i class="bi bi-hand-thumbs-down"></i></a></span>';
+              } else {
+                print '<span style="width:49%;float:left;"><a href="/rating.php?movieId=' . $row['id'] . '&userId=' . $userId . '&rating=1" style="width:100%;float:left;" class="btn btn-dark">Like <i class="bi bi-hand-thumbs-up"></i></a></span>';
+                print '<span style="width:49%;float:right;"><a href="/rating.php?movieId=' . $row['id'] . '&userId=' . $userId . '&rating=-1" style="width:100%;float:right;" class="btn btn-dark">Dislike <i class="bi bi-hand-thumbs-down"></i></a></span>';
+              }
               print '</p>';
             }
             print '</div>';

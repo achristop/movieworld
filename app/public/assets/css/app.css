@@ -274,3 +274,7 @@ textarea:focus {
 .add-space {
   height: 100px;
 }
+
+.btn-dark {
+  background-color: #f38d09 !important;
+}

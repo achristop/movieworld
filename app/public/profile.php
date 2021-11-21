@@ -23,15 +23,14 @@ $total_dislikes = $pdo->query($sql_total_dislikes)->fetchColumn();
 $total_likes = 0;
 $total_dislikes = 0;
 foreach ($pdo->query($sql_movies) as $row) {
-    $sql_total_likes = 'SELECT COUNT(*) FROM ratings WHERE rating = 1 AND user_id=' . $id . ' AND movie_id=' . $row['id'];
-    $sql_total_dislikes = 'SELECT COUNT(*) FROM ratings WHERE rating = 0 AND user_id=' . $id . ' AND movie_id=' . $row['id'];
+    $sql_total_likes = 'SELECT COUNT(*) FROM ratings WHERE rating = 1 AND movie_id=' . $row['id'];
+    $sql_total_dislikes = 'SELECT COUNT(*) FROM ratings WHERE rating = -1 AND movie_id=' . $row['id'];
     try {
         $total_dislikes += $pdo->query($sql_total_dislikes)->fetchColumn();
         $total_likes += $pdo->query($sql_total_likes)->fetchColumn();
     } catch (PDOException $e) {
     }
 }
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -100,7 +99,7 @@ foreach ($pdo->query($sql_movies) as $row) {
                 <?php
                 foreach ($pdo->query($sql_movies) as $row) {
                     $sql_likes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = 1';
-                    $sql_dislikes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = 0';
+                    $sql_dislikes = 'SELECT COUNT(*) FROM ratings WHERE movie_id=' . $row['id'] . ' AND rating = -1';
                     try {
                         $likes = $pdo->query($sql_likes)->fetchColumn();
                     } catch (PDOException $e) {
