@@ -16,7 +16,7 @@
 ## Technologies
 
 - PHP 8.3
-- HTML3
+- HTML5
 - CSS3
 - Boostrap 5.0
 - JavaScript
